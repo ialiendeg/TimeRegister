@@ -48,7 +48,8 @@ Time registers sheet example
 
 ## Usage
 ```elixir
-time_register -i|--item <item>
+time_register -i|--item <item>   # Updates item in current day row
+time_register -s                 # Show current day row values
 ```
 
 item: It's one of: sm (start at morning); em (end at morning); sa (start at afternoon); ea (end at afternoon)
