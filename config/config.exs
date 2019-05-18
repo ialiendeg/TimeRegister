@@ -38,3 +38,5 @@ config :elixir_google_spreadsheets, :client,
   max_interval: :timer.minutes(1),
   interval: 100
 
+config :logger,
+  level: :info

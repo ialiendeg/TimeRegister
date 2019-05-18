@@ -1,6 +1,6 @@
 # TimeRegister
 
-A script to update time registers in a google drive spreadsheet
+A little elixir program to update time registers in a google drive spreadsheet
 
 ## Configuration
 Follow this steps to create and configure a project in Google Developers Console (extracted from https://github.com/Voronchuk/elixir_google_spreadsheets, the best explanation I've found so far, thx Voronchuk)
@@ -16,7 +16,7 @@ Put your service_account.json in ~/.time_register folder
 
 ## Usage
 ```elixir
-./time_register <item>
+./time_register -i|--item <item>
 ```
 
 item: It's one of: sm (start at morning); em (end at morning); sa (start at afternoon); ea (end at afternoon)
