@@ -16,8 +16,8 @@ defmodule TimeRegister do
   def main(args \\ []) do
     Logger.debug ["args: ", inspect(args)]
     {opts, _, _} = OptionParser.parse(args,
-      switches: [ item: :string ],
-      aliases: [i: :item]
+      switches: [ item: :string, show: :boolean ],
+      aliases: [i: :item, s: :show]
       )
 
     item = opts[:item]
@@ -35,18 +35,20 @@ defmodule TimeRegister do
     {:ok, row} = GSS.Spreadsheet.read_row(pid, (date.day + header_rows), column_to: columns_to_update)
     Logger.info ["initial row: ", inspect(row)]
 
-    datetime = Timex.local
-    time_str = Timex.format!(datetime, "%H:%M", :strftime)
+    if !opts[:show] do
+      datetime = Timex.local
+      time_str = Timex.format!(datetime, "%H:%M", :strftime)
 
-    positions = [ "sm", "sa", "em", "ea" ]
+      positions = [ "sm", "sa", "em", "ea" ]
 
-    position = Enum.find_index(positions, fn x -> x == item end)
+      position = Enum.find_index(positions, fn x -> x == item end)
 
-    new_row = List.replace_at(row, (position + 1), time_str)
+      new_row = List.replace_at(row, (position + 1), time_str)
 
-    GSS.Spreadsheet.write_row(pid, (date.day + header_rows), new_row)
+      GSS.Spreadsheet.write_row(pid, (date.day + header_rows), new_row)
 
-    {:ok, row} = GSS.Spreadsheet.read_row(pid, (date.day + header_rows), column_to: columns_to_update)
-    Logger.info ["row: ", inspect(row)]
+      {:ok, row} = GSS.Spreadsheet.read_row(pid, (date.day + header_rows), column_to: columns_to_update)
+      Logger.info ["row: ", inspect(row)]
+    end
   end
 end
