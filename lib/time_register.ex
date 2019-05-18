@@ -25,15 +25,14 @@ defmodule TimeRegister do
     settings = Poison.decode!(Path.expand("~/.time_register/settings.json") |> File.read!)
 
     spreadsheet_url = settings["spreadsheet_url"]
-    first_row = settings["first_row"]
+    header_rows = settings["header_rows"]
     columns_to_update = settings["columns_to_update"]
 
     {:ok, pid} = GSS.Spreadsheet.Supervisor.spreadsheet(spreadsheet_url)
 
     date = Date.utc_today()
-    row_1 = first_row
 
-    {:ok, row} = GSS.Spreadsheet.read_row(pid, (date.day + row_1), column_to: columns_to_update)
+    {:ok, row} = GSS.Spreadsheet.read_row(pid, (date.day + header_rows), column_to: columns_to_update)
     Logger.info ["initial row: ", inspect(row)]
 
     datetime = Timex.local
@@ -45,9 +44,9 @@ defmodule TimeRegister do
 
     new_row = List.replace_at(row, (position + 1), time_str)
 
-    GSS.Spreadsheet.write_row(pid, (date.day + row_1), new_row)
+    GSS.Spreadsheet.write_row(pid, (date.day + header_rows), new_row)
 
-    {:ok, row} = GSS.Spreadsheet.read_row(pid, (date.day + row_1), column_to: columns_to_update)
+    {:ok, row} = GSS.Spreadsheet.read_row(pid, (date.day + header_rows), column_to: columns_to_update)
     Logger.info ["row: ", inspect(row)]
   end
 end
