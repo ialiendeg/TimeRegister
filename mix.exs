@@ -6,6 +6,8 @@ defmodule TimeRegister.MixProject do
       app: :time_register,
       version: "0.1.0",
       elixir: "~> 1.8",
+      escript: escript(),
+      build_embedded: Mix.env == :prod,
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -14,6 +16,7 @@ defmodule TimeRegister.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
+      applications: [:elixir_google_spreadsheets, :timex],
       extra_applications: [:logger]
     ]
   end
@@ -21,8 +24,11 @@ defmodule TimeRegister.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      # {:dep_from_hexpm, "~> 0.3.0"},
-      # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
+      {:elixir_google_spreadsheets, "~> 0.1.11"},
+      {:timex, "~> 3.1"},
+      {:tzdata, "~> 0.1.8", override: true} # Use this version with escript build
     ]
   end
+
+  def escript, do: [main_module: TimeRegister]
 end

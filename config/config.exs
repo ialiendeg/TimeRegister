@@ -28,3 +28,13 @@ use Mix.Config
 # here (which is why it is important to import them last).
 #
 #     import_config "#{Mix.env()}.exs"
+
+config :goth,
+  json: Path.expand("~/.time_register/service_account.json") |> File.read!()
+
+config :elixir_google_spreadsheets, :client,
+  request_workers: 50,
+  max_demand: 100,
+  max_interval: :timer.minutes(1),
+  interval: 100
+
